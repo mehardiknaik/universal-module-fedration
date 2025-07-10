@@ -1,0 +1,11 @@
+{
+  "name": "universal-module-fedration",
+  "version": "1.0.0",
+  "description": "A modern, customizable React + TypeScript starter template powered by Webpack 5. This template is designed for rapid development and production-ready builds, featuring CSS Modules, environment variable support, error boundaries, and more.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
