@@ -4,9 +4,14 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import DotenvWebpackPlugin from 'dotenv-webpack';
 import ProgressBarPlugin from 'progress-bar-webpack-plugin';
 import ConfigWebpackPlugin from './scripts/ConfigWebpackPlugin';
+import { ModuleFederationPlugin } from '@module-federation/enhanced';
 
 const config: Configuration = {
   entry: './src/index.tsx',
+    output: {
+    publicPath: 'auto',
+    uniqueName: 'app2'
+  },
   module: {
     rules: [
       {
@@ -43,6 +48,14 @@ const config: Configuration = {
     new ConfigWebpackPlugin({
       input: './src/config.ts',
       outputFileName: 'config.js'
+    }),
+    new ModuleFederationPlugin({
+      name: 'app2',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './App': './src/components/Remote.tsx'
+      },
+      shared: undefined
     })
   ]
 };

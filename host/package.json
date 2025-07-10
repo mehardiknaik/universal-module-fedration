@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@module-federation/enhanced": "^0.16.0",
     "core-js": "^3.42.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
