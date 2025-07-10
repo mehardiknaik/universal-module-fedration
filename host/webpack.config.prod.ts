@@ -72,14 +72,8 @@ const config: Configuration = {
           priority: -10,
           reuseExistingChunk: true,
           enforce: true
-        },
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendor',
-          chunks: 'all',
-          priority: 10
         }
-      }
+      },
     },
     minimize: true,
     minimizer: [
@@ -94,7 +88,8 @@ const config: Configuration = {
         }
       }),
       new CssMinimizerPlugin()
-    ]
+    ],
+    runtimeChunk:{}
   },
 
   plugins: [
