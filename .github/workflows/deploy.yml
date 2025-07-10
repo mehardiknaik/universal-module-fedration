@@ -39,20 +39,33 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
+      # Build Host App
       - name: Install and Build Host App
         working-directory: host
         run: |
           npm install
           npm run build
 
+      # Build Remote App
+      - name: Install and Build Remote App
+        working-directory: remote
+        run: |
+          npm install
+          npm run build
+
+      # Setup GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Move Host build to dist/host
+      # Move builds into dist/
+      - name: Move Host and Remote builds to dist/
         run: |
           mkdir -p dist/host
           cp -r host/dist/* dist/host/
+          mkdir -p dist/remote
+          cp -r remote/dist/* dist/remote/
 
+      # Upload to GitHub Pages
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

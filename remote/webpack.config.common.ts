@@ -4,6 +4,7 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import DotenvWebpackPlugin from 'dotenv-webpack';
 import ProgressBarPlugin from 'progress-bar-webpack-plugin';
 import ConfigWebpackPlugin from './scripts/ConfigWebpackPlugin';
+import { ModuleFederationPlugin } from '@module-federation/enhanced';
 
 const config: Configuration = {
   entry: './src/index.tsx',
@@ -48,6 +49,15 @@ const config: Configuration = {
       input: './src/config.ts',
       outputFileName: 'config.js'
     }),
+    new ModuleFederationPlugin({
+      name: 'app2',
+      manifest: true,
+      filename: 'remoteEntry.js',
+      exposes: {
+        './App': './src/components/Remote.tsx'
+      },
+      shared: undefined
+    })
   ]
 };
 
