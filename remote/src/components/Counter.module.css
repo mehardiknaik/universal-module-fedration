@@ -1,3 +1,6 @@
 .container {
-  text-align: center;
+  background: #a38ae9;
+  padding: 20px;
+  border: 2px solid #3301bf;
+  border-radius: 10px;
 }

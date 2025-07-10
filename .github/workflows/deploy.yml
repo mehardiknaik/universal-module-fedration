@@ -41,7 +41,7 @@ jobs:
 
       # Build Host App
       - name: Install and Build Host App
-        working-directory: host
+        working-directory: host-webpack-react
         run: |
           npm install
           npm run build
@@ -58,10 +58,10 @@ jobs:
         uses: actions/configure-pages@v4
 
       # Move builds into dist/
-      - name: Move Host and Remote builds to dist/
+      - name: Move host-webpack-react and Remote builds to dist/
         run: |
-          mkdir -p dist/host
-          cp -r host/dist/* dist/host/
+          mkdir -p dist/host-webpack-react
+          cp -r host-webpack-react/dist/* dist/host-webpack-react/
           mkdir -p dist/remote
           cp -r remote/dist/* dist/remote/
 
