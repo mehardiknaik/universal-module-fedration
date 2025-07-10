@@ -39,8 +39,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
-      # Build Host App
-      - name: Install and Build Host App
+      # Build host-webpack-react App
+      - name: Install and Build host-webpack-react App
         working-directory: host-webpack-react
         run: |
           npm install

@@ -5,7 +5,6 @@ const Hero = () => {
   useEffect(() => {
     const eventHandler = (event: Event) => {
       const customEvent = event as CustomEvent;
-      console.log('Build event received:', customEvent.detail);
       setNumber(customEvent.detail || 0);
     };
     document.addEventListener('build', eventHandler);
@@ -15,7 +14,7 @@ const Hero = () => {
   }, []);
   return (
     <div>
-      <h1>This Is Webpack Host</h1>
+      <h1>This Is Host Webpack React</h1>
       <p>Counter value Remote {number} </p>
     </div>
   );
