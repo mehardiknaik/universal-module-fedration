@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+import React,{ lazy } from 'react';
 import style from './App.module.css';
 import webpackLogo from './assets/webpack.png';
 import DemoError from './components/DemoError';

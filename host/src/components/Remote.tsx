@@ -1,20 +1,37 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import Counter from './Counter';
+import React, { useEffect, useRef } from 'react';
 
-export const remote = () => {
-  let root: ReturnType<typeof createRoot>;
-  return {
-    mount: (container: HTMLElement) => {
-      root = createRoot(container);
-      root.render(
-        <div data-remote={__webpack_public_path__} data-build-date={__BUILD_DATE__}>
-          <Counter />
-        </div>
-      );
-    },
-    unmount: () => {
-      return root.unmount?.();
+import { init, loadRemote } from '@module-federation/enhanced/runtime';
+
+init({
+  name: '@demo/app-main',
+  remotes: [
+    {
+      name: '@demo/app2',
+      entry: `${process.env.REMOTE_HOST}/mf-manifest.json`,
+      alias: 'app2'
     }
-  };
+  ]
+});
+
+const Remote = () => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let mod: any = null;
+    loadRemote('app2/App')
+      .then(({ remote }: any) => {
+        mod = remote();
+        mod?.mount?.(ref.current);
+      })
+      .catch(() => {
+        if (ref.current) {
+          ref.current.innerText = 'Error loading remote module';
+        }
+        console.error('Error loading remote module');
+      });
+    return () => mod?.unmount?.();
+  }, []);
+  return <div ref={ref}>Loading....</div>;
 };
+
+export default Remote;
