@@ -46,12 +46,15 @@ jobs:
           npm install
           npm run build
 
-      # Build Remote App
+      # Build Remote App (using REMOTE_HOST env variable)
       - name: Install and Build Remote App
         working-directory: remote
+        env:
+          REMOTE_HOST: ${{ env.REMOTE_HOST }}
         run: |
+          echo "Using remote host: $REMOTE_HOST"
           npm install
-          npm run build
+          npm run build -- --remote-host=$REMOTE_HOST
 
       # Setup GitHub Pages
       - name: Setup Pages
