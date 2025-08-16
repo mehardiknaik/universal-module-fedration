@@ -1,10 +1,13 @@
-name: Deploy to GitHub Pages
+name: Deploy App to GitHub Pages
 
 on:
   workflow_dispatch:
+    inputs:
+      app:
+        description: 'App to deploy (host-webpack-react, host-angular, remote, all - input ignored if you remove condition)'
+        required: false
+        default: 'all'
   push:
-    branches: ["main"]
-  pull_request:
     branches: ["main"]
 
 env:
@@ -13,72 +16,59 @@ env:
 jobs:
   build:
     runs-on: ubuntu-22.04
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     permissions:
       contents: "read"
       id-token: "write"
       pages: "write"
-      actions: "write"
-      checks: "write"
-      deployments: "write"
 
     strategy:
       matrix:
-        node-version: [20]
+        include:
+          - app: host-webpack-react
+            path: host-webpack-react
+          - app: host-angular
+            path: host-angular
+          - app: remote
+            path: remote
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
+          node-version: 20
+          cache: 'npm'
 
-      # Build host-webpack-react App
-      - name: Install and Build host-webpack-react App
-        working-directory: host-webpack-react
+      - name: Install and build ${{ matrix.app }}
+        working-directory: ${{ matrix.path }}
         run: |
           npm install
           npm run build
 
-      # Build host-angular
-      - name: Install and Build host-angular App
-        working-directory: host-angular
+      - name: Move build to dist/${{ matrix.app }}
         run: |
-          npm install
-          npm run build
+          mkdir -p dist/${{ matrix.app }}
+          cp -r ${{ matrix.path }}/dist/* dist/${{ matrix.app }}/
 
-      # Build Remote App
-      - name: Install and Build Remote App
-        working-directory: remote
-        run: |
-          npm install
-          npm run build
-
-      # Setup GitHub Pages
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      # Move builds into dist/
-      - name: Move host-webpack-react and Remote builds to dist/
-        run: |
-          mkdir -p dist/host-webpack-react
-          cp -r host-webpack-react/dist/* dist/host-webpack-react/
-          mkdir -p dist/host-angular
-          cp -r host-angular/dist/* dist/host-angular/
-          mkdir -p dist/remote
-          cp -r remote/dist/* dist/remote/
-
-      # Upload to GitHub Pages
       - name: Upload artifact
+        if: matrix.app == 'remote'  # Avoid duplicate uploads
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-22.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
       - name: Deploy to GitHub Pages
         id: deployment
