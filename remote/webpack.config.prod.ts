@@ -6,6 +6,7 @@ import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import merge from 'webpack-merge';
 import commonConfig from './webpack.config.common';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import pkg from './package.json';
 
 const corejs = 'core-js';
 const corejsReg = new RegExp(`[\\\\/]node_modules[\\\\/]${corejs}[\\\\/]`, 'i');
@@ -99,7 +100,9 @@ const config: Configuration = {
     new DefinePlugin({
       __DEV__: JSON.stringify(false),
       __PROD__: JSON.stringify(true),
-      __BUILD_DATE__: JSON.stringify(new Date().toISOString())
+      __BUILD_DATE__: JSON.stringify(new Date().toISOString()),
+            __APP_NAME__: JSON.stringify(pkg.name),
+      __VERSION__: JSON.stringify(pkg.version)
     }),
     new BundleAnalyzerPlugin({
       openAnalyzer: false,
