@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       app:
-        description: 'App to deploy (host-webpack-react, host-angular, remote, all - input ignored if you remove condition)'
+        description: 'App to deploy (host-webpack-react, host-angular, remote, all)'
         required: false
         default: 'all'
   push:
@@ -43,16 +43,11 @@ jobs:
           npm install
           npm run build
 
-      - name: Move build to dist/${{ matrix.app }}
-        run: |
-          mkdir -p dist/${{ matrix.app }}
-          cp -r ${{ matrix.path }}/dist/* dist/${{ matrix.app }}/
-
-      - name: Upload artifact
-        if: matrix.app == 'remote'  # Avoid duplicate uploads
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
         with:
-          path: dist/
+          name: ${{ matrix.app }}
+          path: ${{ matrix.path }}/dist/
 
   deploy:
     needs: build
@@ -69,11 +64,28 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Restructure artifacts into dist/app-name
+        run: |
+          mkdir final-dist
+          for dir in dist/*; do
+            app_name=$(basename "$dir")
+            mkdir -p final-dist/$app_name
+            cp -r "$dir"/* final-dist/$app_name/
+          done
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: final-dist/
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
