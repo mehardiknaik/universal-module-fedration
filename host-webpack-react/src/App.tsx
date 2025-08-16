@@ -8,8 +8,8 @@ init({
   remotes: [
     {
       name: '@demo/remote',
-      entry: `${process.env.REMOTE_HOST}/mf-manifest.json`,
-      alias: 'remote'
+      entry: `${process.env.REMOTE_HOST}/mf-manifest.json?v=${Date.now()}`,
+      alias: 'remote',
     }
   ]
 });

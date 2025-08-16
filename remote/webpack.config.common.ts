@@ -52,7 +52,7 @@ const config: Configuration = {
     new ModuleFederationPlugin({
       name: 'remote',
       manifest: true,
-      filename: 'remoteEntry.js',
+      filename: `remoteEntry.js?v=${Date.now()}`,
       exposes: {
         './App': './src/components/Remote.tsx',
         './Info': './src/info.ts'

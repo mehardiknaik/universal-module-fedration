@@ -9,7 +9,7 @@ init({
   remotes: [
     {
       name: '@demo/remote',
-      entry: `${environment.REMOTE_HOST}/mf-manifest.json`,
+      entry: `${environment.REMOTE_HOST}/mf-manifest.json?v=${Date.now()}`,
       alias: 'remote',
     },
   ],

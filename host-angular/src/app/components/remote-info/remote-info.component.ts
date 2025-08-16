@@ -14,7 +14,6 @@ export class RemoteInfoComponent implements OnInit {
   ngOnInit(): void {
     loadRemote('remote/Info').then((module:any) => {
       this.info = module.default;
-      console.log(this.info);
     }).catch((error) => {
       console.error('Error loading remote module:', error);
     });
