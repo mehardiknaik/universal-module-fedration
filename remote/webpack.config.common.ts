@@ -8,7 +8,7 @@ import { ModuleFederationPlugin } from '@module-federation/enhanced';
 
 const config: Configuration = {
   entry: './src/index.tsx',
-    output: {
+  output: {
     publicPath: 'auto',
     uniqueName: 'app2'
   },
@@ -50,11 +50,12 @@ const config: Configuration = {
       outputFileName: 'config.js'
     }),
     new ModuleFederationPlugin({
-      name: 'app2',
+      name: 'remote',
       manifest: true,
       filename: 'remoteEntry.js',
       exposes: {
-        './App': './src/components/Remote.tsx'
+        './App': './src/components/Remote.tsx',
+        './Info': './src/info.ts'
       },
       shared: undefined
     })

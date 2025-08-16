@@ -3,6 +3,7 @@ import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-serv
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import commonConfig from './webpack.config.common';
 import { merge } from 'webpack-merge';
+import pkg from './package.json';
 
 interface Configuration extends WebpackConfiguration {
   devServer?: WebpackDevServerConfiguration;
@@ -50,7 +51,9 @@ const config: Configuration = {
     new DefinePlugin({
       __DEV__: JSON.stringify(true),
       __PROD__: JSON.stringify(false),
-      __BUILD_DATE__: JSON.stringify(new Date().toISOString())
+      __BUILD_DATE__: JSON.stringify(new Date().toISOString()),
+      __APP_NAME__: JSON.stringify(pkg.name),
+      __VERSION__: JSON.stringify(pkg.version)
     })
   ],
   devtool: 'eval-source-map',

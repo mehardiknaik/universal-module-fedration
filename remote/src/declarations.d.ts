@@ -37,6 +37,10 @@ declare const __PROD__: boolean;
  */
 declare const __BUILD_DATE__: string;
 
+declare const __APP_NAME__: string;
+
+declare const __VERSION__: string;
+
 interface Window {
   /**
    * Global environment variables.

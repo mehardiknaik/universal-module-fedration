@@ -5,19 +5,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { init, loadRemote } from '@module-federation/enhanced/runtime';
-import { environment } from '../../../environments/environment';
-
-init({
-  name: '@demo/app-main',
-  remotes: [
-    {
-      name: '@demo/app2',
-      entry: `${environment.REMOTE_HOST}/mf-manifest.json`,
-      alias: 'app2'
-    }
-  ],
-});
+import { loadRemote } from '@module-federation/enhanced/runtime';
 
 @Component({
   selector: 'app-remote',
@@ -31,7 +19,7 @@ export class RemoteComponent implements AfterViewInit, OnDestroy {
   remoteElement: any;
 
   ngAfterViewInit(): void {
-    loadRemote('app2/App')
+    loadRemote('remote/App')
       .then(({ remote }: any) => {
         this.remoteElement = remote();
         this.remoteElement?.mount?.(this.ref.nativeElement);
