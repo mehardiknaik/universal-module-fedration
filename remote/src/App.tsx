@@ -1,5 +1,6 @@
 import style from './App.module.css';
 import webpackLogo from './assets/webpack.png';
+import Router from './components/Router';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <img src="./react.svg" alt="React Logo" className={style.react} />
         <img src={webpackLogo} alt="Webpack Logo" className={style.webpack} />
       </div>
+      <Router/>
     </div>
   );
 };

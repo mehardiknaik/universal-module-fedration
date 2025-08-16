@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import style from './Counter.module.css';
+import { remote } from './Remote';
 
 export interface CustomData {
   count: number;
@@ -22,7 +23,11 @@ const Counter = () => {
   };
 
   useEffect(() => {
+    const timer=setInterval(() => {
+      console.log('Counter is running');
+    }, 1000);
     emitEvent({ count });
+    return () => clearInterval(timer);
   }, []);
   return (
     <div ref={ref} className={style.container}>
@@ -39,4 +44,4 @@ const Counter = () => {
   );
 };
 
-export default Counter;
+export default remote({ Component: Counter });

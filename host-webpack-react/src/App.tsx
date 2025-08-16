@@ -1,7 +1,8 @@
 import { init } from '@module-federation/enhanced/runtime';
 import Hero from './components/Hero';
-import Remote from './components/Remote';
+import Remote from './components/RemoteCounter';
 import RemoteInfo from './components/RemoteInfo';
+import RemotePage from './components/RemotePages';
 
 init({
   name: '@demo/app-main',
@@ -20,6 +21,7 @@ const App = () => {
       <Hero />
       <Remote />
       <RemoteInfo />
+      <RemotePage/>
     </div>
   );
 };

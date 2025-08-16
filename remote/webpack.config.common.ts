@@ -54,8 +54,9 @@ const config: Configuration = {
       manifest: true,
       filename: `remoteEntry.js?v=${Date.now()}`,
       exposes: {
-        './App': './src/components/Remote.tsx',
-        './Info': './src/info.ts'
+        './Counter': './src/components/Counter.tsx',
+        './Info': './src/info.ts',
+        './Router': './src/components/Router.tsx'
       },
       shared: undefined
     })

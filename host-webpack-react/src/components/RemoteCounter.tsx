@@ -7,8 +7,8 @@ const Remote = () => {
 
   useEffect(() => {
     let mod: any = null;
-    loadRemote('remote/App')
-      .then(({ remote }: any) => {
+    loadRemote('remote/Counter')
+      .then(({ default: remote }: any) => {
         mod = remote();
         mod?.mount?.(ref.current);
       })

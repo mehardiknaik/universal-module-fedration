@@ -1,10 +1,10 @@
 import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import style from './Remote.module.css';
-import Counter from './Counter';
-import logo from '../assets/remote.svg';
 
-export const remote = () => {
+export interface RemoteProps {}
+
+export const remote = ({ Component }: { Component: React.ComponentType<any> }) => () => {
   let root: ReturnType<typeof createRoot>;
   return {
     mount: (container: HTMLElement) => {
@@ -14,11 +14,9 @@ export const remote = () => {
           data-remote={__webpack_public_path__}
           data-build-date={__BUILD_DATE__}
           className={style.container}>
-          <div className={style.header}>
-            <h1>Remote Component</h1>
-            <img src={logo} alt="Remote" className={style.logo} />
-          </div>
-          <Counter />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Component />
+          </Suspense>
         </div>
       );
     },

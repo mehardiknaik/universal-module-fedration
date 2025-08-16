@@ -19,8 +19,8 @@ export class RemoteComponent implements AfterViewInit, OnDestroy {
   remoteElement: any;
 
   ngAfterViewInit(): void {
-    loadRemote('remote/App')
-      .then(({ remote }: any) => {
+    loadRemote('remote/Counter')
+      .then(({ default:remote }: any) => {
         this.remoteElement = remote();
         this.remoteElement?.mount?.(this.ref.nativeElement);
       })
