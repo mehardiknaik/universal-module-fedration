@@ -5,7 +5,7 @@ const Hero = () => {
   useEffect(() => {
     const eventHandler = (event: Event) => {
       const customEvent = event as CustomEvent;
-      setNumber(customEvent.detail || 0);
+      setNumber(customEvent.detail?.count || 0);
     };
     document.addEventListener('build', eventHandler);
     return () => {

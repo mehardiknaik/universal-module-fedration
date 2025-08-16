@@ -3,4 +3,15 @@
   padding: 20px;
   border: 2px solid #3301bf;
   border-radius: 10px;
+  overflow: hidden;
+}
+.count {
+  scale: 1.5;
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    scale: 1;
+  }
 }
