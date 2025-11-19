@@ -7,7 +7,7 @@ export interface CustomData {
   count: number;
 }
 
-const Counter = () => {
+export const Counter = () => {
   const [count, setCount] = useState(0);
   const ref = React.useRef<HTMLDivElement>(null);
   const emitEvent = (detail: CustomData) => {
@@ -43,5 +43,4 @@ const Counter = () => {
     </div>
   );
 };
-
 export default remote({ Component: Counter });

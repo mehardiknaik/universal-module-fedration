@@ -56,7 +56,6 @@ const config: Configuration = {
       exposes: {
         './Counter': './src/components/Counter.tsx',
         './Info': './src/info.ts',
-        './Router': './src/components/Router.tsx'
       },
       shared: undefined
     })

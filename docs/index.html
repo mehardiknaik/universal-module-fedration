@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Module Federation - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #8b5cf6;
+            --dark-bg: #1e293b;
+            --darker-bg: #0f172a;
+            --code-bg: #334155;
+            --text-color: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-color: #475569;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --card-bg: #1e293b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border-radius: 16px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+        }
+
+        .app-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .app-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .app-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+        }
+
+        .app-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .app-card p {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        .section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: var(--secondary-color);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        code {
+            background: var(--code-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #fbbf24;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid var(--primary-color);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: #e2e8f0;
+            font-size: 0.95em;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .badge-react {
+            background: rgba(97, 218, 251, 0.2);
+            color: #61dafb;
+            border: 1px solid #61dafb;
+        }
+
+        .badge-angular {
+            background: rgba(221, 0, 49, 0.2);
+            color: #dd0031;
+            border: 1px solid #dd0031;
+        }
+
+        .badge-webpack {
+            background: rgba(142, 214, 251, 0.2);
+            color: #8ed6fb;
+            border: 1px solid #8ed6fb;
+        }
+
+        .badge-ts {
+            background: rgba(49, 120, 198, 0.2);
+            color: #3178c6;
+            border: 1px solid #3178c6;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--code-bg);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .note {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--warning-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .success {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--success-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+        }
+
+        .command-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .command-line::before {
+            content: '>';
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .app-links {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            header {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Universal Module Federation</h1>
+            <p class="subtitle">Micro-Frontend Architecture with React, Angular & Webpack 5</p>
+            <div class="tech-stack">
+                <span class="badge badge-react">React 19</span>
+                <span class="badge badge-angular">Angular 19</span>
+                <span class="badge badge-webpack">Webpack 5</span>
+                <span class="badge badge-ts">TypeScript</span>
+            </div>
+        </header>
+
+        <!-- Application Links -->
+        <section class="section">
+            <h2>📱 Deployed Applications</h2>
+            <div class="app-links">
+                <div class="app-card">
+                    <h3>Host (React + Webpack)</h3>
+                    <p>Main host application built with React 19 and Webpack 5, consuming remote modules.</p>
+                    <a href="./host-webpack-react/" class="btn">Open App →</a>
+                </div>
+                <div class="app-card">
+                    <h3>Host (Angular)</h3>
+                    <p>Angular 19 host application demonstrating universal module federation.</p>
+                    <a href="./host-angular/" class="btn">Open App →</a>
+                </div>
+                <div class="app-card">
+                    <h3>Remote (React)</h3>
+                    <p>Remote React application exposing shared components and utilities.</p>
+                    <a href="./remote/" class="btn">Open App →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Overview -->
+        <section class="section">
+            <h2>📖 Project Overview</h2>
+            <p>This project demonstrates <strong>Module Federation</strong> using Webpack 5, enabling micro-frontend architecture where multiple independent applications can share code dynamically at runtime.</p>
+            
+            <h3>Architecture</h3>
+            <ul>
+                <li><strong>Remote Application:</strong> Exposes components (Counter, Router, Info) that can be consumed by host apps</li>
+                <li><strong>Host Applications:</strong> Consume remote components and integrate them seamlessly</li>
+                <li><strong>Technology Agnostic:</strong> Works across React, Angular, and other frameworks</li>
+                <li><strong>Runtime Loading:</strong> Components are loaded dynamically at runtime, not build time</li>
+            </ul>
+
+            <h3>Exposed Remote Modules</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Module Name</th>
+                        <th>Path</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>./Counter</code></td>
+                        <td><code>./src/components/Counter.tsx</code></td>
+                        <td>React Counter component with state management</td>
+                    </tr>
+                    <tr>
+                        <td><code>./Info</code></td>
+                        <td><code>./src/info.ts</code></td>
+                        <td>Utility module with app information</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Local Development Setup -->
+        <section class="section">
+            <h2>🛠️ Local Development Setup</h2>
+            
+            <h3>Prerequisites</h3>
+            <ul>
+                <li>Node.js (v20 or higher)</li>
+                <li>npm (comes with Node.js)</li>
+                <li>Git</li>
+            </ul>
+
+            <h3>Clone Repository</h3>
+            <pre><code>git clone https://github.com/mehardiknaik/universal-module-fedration.git
+cd universal-module-fedration</code></pre>
+
+            <h3>Install Dependencies & Run</h3>
+            
+            <div class="note">
+                <strong>Note:</strong> You need to run the remote application first, as host applications depend on it.
+            </div>
+
+            <h4>1. Start Remote Application (Port 3001)</h4>
+            <pre><code>cd remote
+npm install
+npm start</code></pre>
+            <p>Remote will be available at: <code>http://localhost:3001</code></p>
+
+            <h4>2. Start Host Webpack React (Port 3000)</h4>
+            <pre><code>cd host-webpack-react
+npm install
+npm start</code></pre>
+            <p>Host React will be available at: <code>http://localhost:3000</code></p>
+
+            <h4>3. Start Host Angular (Port 4200)</h4>
+            <pre><code>cd host-angular
+npm install
+npm start</code></pre>
+            <p>Host Angular will be available at: <code>http://localhost:4200</code></p>
+
+            <h3>Build for Production</h3>
+            <p>Build each application separately:</p>
+            <pre><code># Build Remote
+cd remote
+npm run build
+
+# Build Host React
+cd host-webpack-react
+npm run build
+
+# Build Host Angular
+cd host-angular
+npm run build</code></pre>
+        </section>
+
+        <!-- Module Federation Configuration -->
+        <section class="section">
+            <h2>⚙️ Module Federation Configuration</h2>
+
+            <h3>Remote Configuration (webpack.config.common.ts)</h3>
+            <pre><code>import { ModuleFederationPlugin } from '@module-federation/enhanced';
+
+new ModuleFederationPlugin({
+  name: 'remote',
+  manifest: true,
+  filename: `remoteEntry.js?v=${Date.now()}`,
+  exposes: {
+    './Counter': './src/components/Counter.tsx',
+    './Info': './src/info.ts',
+    './Router': './src/components/Router.tsx'
+  },
+  shared: undefined
+})</code></pre>
+
+            <h3>Host Configuration (App.tsx)</h3>
+            <pre><code>import { init } from '@module-federation/enhanced/runtime';
+
+init({
+  name: '@demo/app-main',
+  remotes: [
+    {
+      name: '@demo/remote',
+      entry: `${process.env.REMOTE_HOST}/mf-manifest.json?v=${Date.now()}`,
+      alias: 'remote',
+    }
+  ]
+});
+
+// Usage in component
+import Remote from './components/RemoteCounter';
+
+const App = () => {
+  return (
+    &lt;div&gt;
+      &lt;Remote /&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+
+            <h3>Loading Remote Components in React</h3>
+            <pre><code>// In host-webpack-react/src/components/RemoteCounter.tsx
+import React, { useEffect, useRef } from 'react';
+import { loadRemote } from '@module-federation/enhanced/runtime';
+
+const Remote = () => {
+  const ref = useRef&lt;HTMLDivElement&gt;(null);
+
+  useEffect(() => {
+    let mod: any = null;
+    loadRemote('remote/Counter')
+      .then(({ default: remote }: any) => {
+        mod = remote();
+        mod?.mount?.(ref.current);
+      })
+      .catch(() => {
+        if (ref.current) {
+          ref.current.innerText = 'Error loading remote module';
+        }
+        console.error('Error loading remote module');
+      });
+    return () => mod?.unmount?.();
+  }, []);
+  
+  return &lt;div ref={ref}&gt;Loading....&lt;/div&gt;;
+};
+
+export default Remote;</code></pre>
+
+            <h3>Loading Remote Components in Angular</h3>
+            <pre><code>// In host-angular/src/app/components/remote/remote.component.ts
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
+import { loadRemote } from '@module-federation/enhanced/runtime';
+
+@Component({
+  selector: 'app-remote',
+  imports: [],
+  templateUrl: './remote.component.html',
+  styleUrl: './remote.component.css',
+})
+export class RemoteComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('ref', { static: false })
+  ref!: ElementRef;
+  remoteElement: any;
+
+  ngAfterViewInit(): void {
+    loadRemote('remote/Counter')
+      .then(({ default: remote }: any) => {
+        this.remoteElement = remote();
+        this.remoteElement?.mount?.(this.ref.nativeElement);
+      })
+      .catch(() => {
+        this.ref.nativeElement.innerText = 'Error loading remote module';
+      });
+  }
+  
+  ngOnDestroy(): void {
+    this.remoteElement?.unmount?.();
+  }
+}</code></pre>
+
+            <div class="note">
+                <strong>Key Points:</strong>
+                <ul>
+                    <li>Both React and Angular use the same <code>loadRemote()</code> API</li>
+                    <li>Remote components expose <code>mount()</code> and <code>unmount()</code> lifecycle methods</li>
+                    <li>Use refs/ElementRef to get DOM elements for mounting</li>
+                    <li>Always handle cleanup in useEffect return or ngOnDestroy</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- How to Use Module Federation -->
+        <section class="section">
+            <h2>🎯 How to Use Module Federation</h2>
+
+            <h3>Step-by-Step Guide</h3>
+
+            <h4>1. Understanding the Architecture</h4>
+            <p>Module Federation allows you to:</p>
+            <ul>
+                <li><strong>Remote App:</strong> Exposes components that other apps can consume</li>
+                <li><strong>Host Apps:</strong> Load and use components from remote apps at runtime</li>
+                <li><strong>Dynamic Loading:</strong> Components are fetched when needed, not bundled at build time</li>
+            </ul>
+
+            <h4>2. Setting Up Remote Application</h4>
+            <p>The remote application must expose components using Module Federation Plugin:</p>
+            <pre><code>// remote/webpack.config.common.ts
+import { ModuleFederationPlugin } from '@module-federation/enhanced';
+
+new ModuleFederationPlugin({
+  name: 'remote',                    // Unique name for this remote
+  manifest: true,                    // Generate manifest file
+  filename: 'remoteEntry.js',        // Entry file name
+  exposes: {
+    './Counter': './src/components/Counter.tsx',   // Expose Counter component
+    './Info': './src/info.ts',                     // Expose Info module
+    './Router': './src/components/Router.tsx'      // Expose Router component
+  },
+  shared: undefined                  // Share dependencies (optional)
+})</code></pre>
+
+            <h4>3. Creating Exposable Components</h4>
+            <p>Remote components should export mount/unmount functions for lifecycle management:</p>
+            <pre><code>// remote/src/components/Counter.tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import Counter from './CounterUI';
+
+export default function () {
+  let root: any = null;
+  
+  return {
+    mount: (container: HTMLElement) => {
+      root = ReactDOM.createRoot(container);
+      root.render(&lt;Counter /&gt;);
+    },
+    unmount: () => {
+      root?.unmount();
+    }
+  };
+}</code></pre>
+
+            <h4>4. Initializing Host Application (React)</h4>
+            <pre><code>// host-webpack-react/src/App.tsx
+import { init } from '@module-federation/enhanced/runtime';
+
+init({
+  name: '@demo/app-main',
+  remotes: [
+    {
+      name: '@demo/remote',
+      entry: `${process.env.REMOTE_HOST}/mf-manifest.json`,
+      alias: 'remote',
+    }
+  ]
+});
+
+const App = () => {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Host Application&lt;/h1&gt;
+      &lt;RemoteCounter /&gt;
+      &lt;RemoteInfo /&gt;
+      &lt;RemoteRouter /&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+
+            <h4>5. Initializing Host Application (Angular)</h4>
+            <pre><code>// host-angular/src/main.ts
+import { init } from '@module-federation/enhanced/runtime';
+
+init({
+  name: '@demo/app-angular',
+  remotes: [
+    {
+      name: '@demo/remote',
+      entry: 'http://localhost:3001/mf-manifest.json',
+      alias: 'remote',
+    }
+  ]
+});
+
+bootstrapApplication(AppComponent, appConfig)
+  .catch((err) => console.error(err));</code></pre>
+
+            <h4>6. Loading Remote Components in React</h4>
+            <pre><code>import React, { useEffect, useRef } from 'react';
+import { loadRemote } from '@module-federation/enhanced/runtime';
+
+const RemoteCounter = () => {
+  const ref = useRef&lt;HTMLDivElement&gt;(null);
+
+  useEffect(() => {
+    let mod: any = null;
+    
+    // Load remote module
+    loadRemote('remote/Counter')
+      .then(({ default: remote }: any) => {
+        mod = remote();
+        mod?.mount?.(ref.current);
+      })
+      .catch((error) => {
+        console.error('Failed to load remote:', error);
+        if (ref.current) {
+          ref.current.innerText = 'Error loading remote module';
+        }
+      });
+    
+    // Cleanup on unmount
+    return () => mod?.unmount?.();
+  }, []);
+
+  return &lt;div ref={ref}&gt;Loading remote component...&lt;/div&gt;;
+};
+
+export default RemoteCounter;</code></pre>
+
+            <h4>7. Loading Remote Components in Angular</h4>
+            <pre><code>import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { loadRemote } from '@module-federation/enhanced/runtime';
+
+@Component({
+  selector: 'app-remote-counter',
+  template: '&lt;div #ref&gt;Loading...&lt;/div&gt;'
+})
+export class RemoteCounterComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('ref', { static: false }) ref!: ElementRef;
+  remoteElement: any;
+
+  ngAfterViewInit(): void {
+    loadRemote('remote/Counter')
+      .then(({ default: remote }: any) => {
+        this.remoteElement = remote();
+        this.remoteElement?.mount?.(this.ref.nativeElement);
+      })
+      .catch((error) => {
+        console.error('Failed to load remote:', error);
+        this.ref.nativeElement.innerText = 'Error loading remote module';
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.remoteElement?.unmount?.();
+  }
+}</code></pre>
+
+            <h3>Environment Configuration</h3>
+            <div class="warning">
+                <strong>Important:</strong> Configure the remote host URL based on your environment
+            </div>
+
+            <h4>Development Environment</h4>
+            <pre><code># .env file in host-webpack-react
+REMOTE_HOST=http://localhost:3001</code></pre>
+
+            <h4>Production Environment (GitHub Pages)</h4>
+            <pre><code># Production configuration
+REMOTE_HOST=https://mehardiknaik.github.io/universal-module-fedration/remote</code></pre>
+
+            <h4>Runtime Configuration</h4>
+            <pre><code>// public/config.js - Can be modified after deployment
+window.__env = {
+  REMOTE_HOST: 'https://your-domain.com/remote'
+};</code></pre>
+
+            <h3>Testing Module Federation</h3>
+            <ol>
+                <li><strong>Start Remote:</strong> <code>cd remote && npm start</code> (Port 3001)</li>
+                <li><strong>Start Host:</strong> <code>cd host-webpack-react && npm start</code> (Port 3000)</li>
+                <li><strong>Open Browser:</strong> Navigate to <code>http://localhost:3000</code></li>
+                <li><strong>Check Console:</strong> Verify remote modules are loading correctly</li>
+                <li><strong>Test Components:</strong> Interact with remote components to ensure they work</li>
+            </ol>
+
+            <div class="success">
+                <strong>Pro Tip:</strong> Use browser DevTools Network tab to see remote module requests and verify the manifest file is being loaded correctly.
+            </div>
+        </section>
+
+        <!-- Deployment Guide -->
+        <section class="section">
+            <h2>🚀 Deployment Guide</h2>
+
+            <h3>Deployed Application URLs</h3>
+            <p>After deployment to GitHub Pages, your applications will be available at:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Application</th>
+                        <th>URL</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Documentation</strong></td>
+                        <td><code>https://mehardiknaik.github.io/universal-module-fedration/</code></td>
+                        <td>This documentation page (index.html)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Remote</strong></td>
+                        <td><code>https://mehardiknaik.github.io/universal-module-fedration/remote/</code></td>
+                        <td>Remote app that exposes components</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Host React</strong></td>
+                        <td><code>https://mehardiknaik.github.io/universal-module-fedration/host-webpack-react/</code></td>
+                        <td>React host consuming remote components</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Host Angular</strong></td>
+                        <td><code>https://mehardiknaik.github.io/universal-module-fedration/host-angular/</code></td>
+                        <td>Angular host consuming remote components</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>GitHub Pages Deployment</h3>
+            <p>This project uses GitHub Actions for automated deployment to GitHub Pages.</p>
+
+            <h4>Workflow File Path</h4>
+            <pre><code>.github/workflows/deploy.yml</code></pre>
+
+            <h4>Deployment Process</h4>
+            <ol>
+                <li><strong>Trigger:</strong> Automatically runs on push to <code>main</code> branch or manual workflow dispatch</li>
+                <li><strong>Build:</strong> Builds all three applications (host-webpack-react, host-angular, remote) in parallel</li>
+                <li><strong>Artifact Upload:</strong> Uploads build artifacts for each app</li>
+                <li><strong>Deploy:</strong> Restructures artifacts into <code>final-dist/app-name</code> structure</li>
+                <li><strong>GitHub Pages:</strong> Deploys to GitHub Pages</li>
+            </ol>
+
+            <h4>Manual Deployment Workflow</h4>
+            <p>You can trigger deployment manually from GitHub Actions tab:</p>
+            <ol>
+                <li>Go to your repository on GitHub</li>
+                <li>Click "Actions" tab</li>
+                <li>Select "Deploy App to GitHub Pages" workflow</li>
+                <li>Click "Run workflow"</li>
+                <li>Select which app to deploy (or "all")</li>
+                <li>Click "Run workflow" button</li>
+            </ol>
+
+            <div class="success">
+                <strong>Automatic Deployment:</strong> Every push to <code>main</code> branch automatically triggers deployment of all apps.
+            </div>
+
+            <h4>Base Href Configuration</h4>
+            <p>For Angular app in subdirectory deployment:</p>
+            <pre><code>// angular.json
+"baseHref": "/universal-module-fedration/host-angular/",</code></pre>
+
+            <h4>Public Path Configuration</h4>
+            <p>For Webpack apps:</p>
+            <pre><code>// webpack.config.common.ts
+output: {
+  publicPath: 'auto',
+  uniqueName: 'app2'
+}</code></pre>
+        </section>
+
+        <!-- Environment Variables -->
+        <section class="section">
+            <h2>🔐 Environment Variables</h2>
+
+            <h3>Required Environment Variables</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>REMOTE_HOST</code></td>
+                        <td>URL of the remote application</td>
+                        <td><code>https://username.github.io/universal-module-fedration/remote</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>APP_NAME</code></td>
+                        <td>Application name</td>
+                        <td><code>host-webpack-react</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>NODE_ENV</code></td>
+                        <td>Environment mode</td>
+                        <td><code>production</code> or <code>development</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Environment Setup</h3>
+            <pre><code># .env file in host-webpack-react
+REMOTE_HOST=http://localhost:3001
+APP_NAME=host-webpack-react</code></pre>
+
+            <h3>Runtime Configuration</h3>
+            <p>Configuration can be injected at runtime using <code>public/config.js</code>:</p>
+            <pre><code>// public/config.js
+window.__env = {
+  NAME: 'Production Environment',
+  REMOTE_HOST: 'https://username.github.io/universal-module-fedration/remote'
+};</code></pre>
+        </section>
+
+        <!-- Project Structure -->
+        <section class="section">
+            <h2>📁 Project Structure</h2>
+            <pre><code>universal-module-fedration/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml              # GitHub Actions deployment workflow
+├── host-webpack-react/             # React host application
+│   ├── public/
+│   │   └── config.js              # Runtime configuration
+│   ├── src/
+│   │   ├── App.tsx                # Main app with module federation init
+│   │   ├── components/
+│   │   │   ├── Hero.tsx
+│   │   │   ├── RemoteCounter.tsx  # Loads remote Counter
+│   │   │   ├── RemoteInfo.tsx     # Loads remote Info
+│   │   │   └── RemotePages.tsx    # Loads remote Router
+│   │   └── HOC/
+│   │       ├── withErrorBoundary.tsx
+│   │       └── withSuspense.tsx
+│   ├── webpack.config.common.ts   # Common webpack config
+│   ├── webpack.config.dev.ts      # Development config
+│   └── webpack.config.prod.ts     # Production config
+├── host-angular/                   # Angular host application
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── components/
+│   │   │   │   ├── hero/
+│   │   │   │   ├── remote/        # Remote component wrapper
+│   │   │   │   ├── remote-info/
+│   │   │   │   └── remote-router/
+│   │   │   └── app.routes.ts
+│   │   └── environments/
+│   └── angular.json               # Angular configuration
+├── remote/                         # Remote application
+│   ├── src/
+│   │   ├── App.tsx
+│   │   ├── info.ts                # Exposed info module
+│   │   ├── components/
+│   │   │   ├── Counter.tsx        # Exposed Counter component
+│   │   │   └── Router.tsx         # Exposed Router component
+│   │   └── pages/
+│   │       ├── HomePage.tsx
+│   │       └── AboutPage.tsx
+│   └── webpack.config.common.ts   # Module Federation config
+└── package.json</code></pre>
+        </section>
+
+        <!-- Scripts Reference -->
+        <section class="section">
+            <h2>📜 NPM Scripts Reference</h2>
+
+            <h3>Remote Application</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Script</th>
+                        <th>Command</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>start</code></td>
+                        <td><code>webpack serve --config webpack.config.dev.ts</code></td>
+                        <td>Start development server on port 3001</td>
+                    </tr>
+                    <tr>
+                        <td><code>build</code></td>
+                        <td><code>webpack --config webpack.config.prod.ts</code></td>
+                        <td>Build for production</td>
+                    </tr>
+                    <tr>
+                        <td><code>lint</code></td>
+                        <td><code>eslint .</code></td>
+                        <td>Run ESLint</td>
+                    </tr>
+                    <tr>
+                        <td><code>lint:fix</code></td>
+                        <td><code>eslint . --fix</code></td>
+                        <td>Fix ESLint errors</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Host Webpack React</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Script</th>
+                        <th>Command</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>start</code></td>
+                        <td><code>webpack serve --config webpack.config.dev.ts</code></td>
+                        <td>Start development server on port 3000</td>
+                    </tr>
+                    <tr>
+                        <td><code>build</code></td>
+                        <td><code>webpack --config webpack.config.prod.ts</code></td>
+                        <td>Build for production</td>
+                    </tr>
+                    <tr>
+                        <td><code>lint</code></td>
+                        <td><code>eslint .</code></td>
+                        <td>Run ESLint</td>
+                    </tr>
+                    <tr>
+                        <td><code>lint:fix</code></td>
+                        <td><code>eslint . --fix</code></td>
+                        <td>Fix ESLint errors</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Host Angular</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Script</th>
+                        <th>Command</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>start</code></td>
+                        <td><code>ng serve</code></td>
+                        <td>Start development server on port 4200</td>
+                    </tr>
+                    <tr>
+                        <td><code>build</code></td>
+                        <td><code>ng build</code></td>
+                        <td>Build for production</td>
+                    </tr>
+                    <tr>
+                        <td><code>test</code></td>
+                        <td><code>ng test</code></td>
+                        <td>Run unit tests</td>
+                    </tr>
+                    <tr>
+                        <td><code>watch</code></td>
+                        <td><code>ng build --watch --configuration development</code></td>
+                        <td>Build in watch mode</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Troubleshooting -->
+        <section class="section">
+            <h2>🔧 Troubleshooting</h2>
+
+            <h3>Common Issues</h3>
+
+            <div class="warning">
+                <strong>Issue:</strong> Remote module not loading
+                <p><strong>Solution:</strong> Ensure the remote application is running before starting the host application. Check that <code>REMOTE_HOST</code> environment variable is correctly configured.</p>
+            </div>
+
+            <div class="warning">
+                <strong>Issue:</strong> CORS errors in development
+                <p><strong>Solution:</strong> The remote application must allow CORS from the host application origin. Check webpack dev server configuration.</p>
+            </div>
+
+            <div class="warning">
+                <strong>Issue:</strong> Module not found errors
+                <p><strong>Solution:</strong> Verify the exposed module names match exactly in both remote and host configurations. Check the manifest file is being generated correctly.</p>
+            </div>
+
+            <h3>Development Tips</h3>
+            <ul>
+                <li>Always start the remote application first</li>
+                <li>Use browser DevTools Network tab to verify remote module loading</li>
+                <li>Check console for Module Federation specific errors</li>
+                <li>Ensure all dependencies versions are compatible</li>
+                <li>Use <code>npm run build</code> to test production builds locally before deployment</li>
+            </ul>
+        </section>
+
+        <!-- Key Features -->
+        <section class="section">
+            <h2>✨ Key Features</h2>
+            <ul>
+                <li><strong>Module Federation:</strong> Share code between applications at runtime</li>
+                <li><strong>Framework Agnostic:</strong> Works with React, Angular, Vue, and more</li>
+                <li><strong>Independent Deployment:</strong> Deploy applications independently</li>
+                <li><strong>Code Splitting:</strong> Optimized bundle sizes with automatic code splitting</li>
+                <li><strong>TypeScript:</strong> Full TypeScript support across all applications</li>
+                <li><strong>CSS Modules:</strong> Scoped styling with CSS Modules</li>
+                <li><strong>Error Boundaries:</strong> Robust error handling for remote components</li>
+                <li><strong>Lazy Loading:</strong> Components loaded on demand</li>
+                <li><strong>CI/CD:</strong> Automated deployment with GitHub Actions</li>
+                <li><strong>Bundle Analyzer:</strong> Visualize and optimize bundle sizes</li>
+            </ul>
+        </section>
+
+        <!-- Technology Stack -->
+        <section class="section">
+            <h2>🔧 Technology Stack</h2>
+            
+            <h3>Core Technologies</h3>
+            <ul>
+                <li><strong>React 19:</strong> Latest React with concurrent features</li>
+                <li><strong>Angular 19:</strong> Modern Angular with standalone components</li>
+                <li><strong>TypeScript 5.8:</strong> Type-safe development</li>
+                <li><strong>Webpack 5:</strong> Module bundler with Module Federation</li>
+                <li><strong>@module-federation/enhanced:</strong> Enhanced Module Federation runtime</li>
+            </ul>
+
+            <h3>Build Tools</h3>
+            <ul>
+                <li><strong>Babel:</strong> JavaScript transpilation</li>
+                <li><strong>ESLint:</strong> Code linting</li>
+                <li><strong>Prettier:</strong> Code formatting</li>
+                <li><strong>Terser:</strong> JavaScript minification</li>
+                <li><strong>CSS Minimizer:</strong> CSS optimization</li>
+            </ul>
+
+            <h3>Development Tools</h3>
+            <ul>
+                <li><strong>Webpack Dev Server:</strong> Hot module replacement</li>
+                <li><strong>Webpack Bundle Analyzer:</strong> Bundle visualization</li>
+                <li><strong>dotenv-webpack:</strong> Environment variable management</li>
+                <li><strong>Progress Bar Plugin:</strong> Build progress indication</li>
+            </ul>
+        </section>
+
+        <!-- Additional Resources -->
+        <section class="section">
+            <h2>📚 Additional Resources</h2>
+            <ul>
+                <li><a href="https://webpack.js.org/concepts/module-federation/" target="_blank" style="color: var(--primary-color);">Webpack Module Federation Documentation</a></li>
+                <li><a href="https://github.com/module-federation/enhanced" target="_blank" style="color: var(--primary-color);">Module Federation Enhanced</a></li>
+                <li><a href="https://react.dev/" target="_blank" style="color: var(--primary-color);">React Documentation</a></li>
+                <li><a href="https://angular.dev/" target="_blank" style="color: var(--primary-color);">Angular Documentation</a></li>
+                <li><a href="https://github.com/mehardiknaik/universal-module-fedration" target="_blank" style="color: var(--primary-color);">GitHub Repository</a></li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>Built with ❤️ using Module Federation</p>
+            <p>© 2025 Universal Module Federation Project</p>
+        </footer>
+    </div>
+</body>
+</html>
